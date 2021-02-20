@@ -1,9 +1,11 @@
 package writer
 
 import (
-    "LogProcess/messages"
     "context"
+
     "go.mongodb.org/mongo-driver/mongo"
+
+    "LogProcess/messages"
 )
 
 type Writer interface {

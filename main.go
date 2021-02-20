@@ -1,13 +1,15 @@
 package main
 
 import (
-    "LogProcess/context"
-    "LogProcess/processor"
-    "LogProcess/reader"
-    "LogProcess/writer"
     "fmt"
     "os"
     "time"
+
+    "LogProcess/context"
+    "LogProcess/monitor"
+    "LogProcess/processor"
+    "LogProcess/reader"
+    "LogProcess/writer"
 )
 
 func main() {
@@ -16,10 +18,13 @@ func main() {
     p := &processor.NginxProcessor{}
     logCtx := context.NewLogContext(r, w, p)
 
+    m := monitor.NewMonitor()
+
     go logCtx.Read()
     go logCtx.Process()
     go logCtx.Write()
-    go logCtx.Monitor()
+
+    go m.StartMonitor(logCtx)
 
     // 模拟日志输入
     go mockNginxLog(100)
